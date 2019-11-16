@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User{
 
@@ -19,12 +21,15 @@ public class User{
 	@Column(nullable = false)
 	private String username;
 	@Column(nullable = false)
+	@JsonIgnore
 	private String password;
 	
 	private int blocked;
 	
+	@JsonIgnore
 	private String roles;
 	
+	@JsonIgnore
 	private String permissions;
 
 	public User() {
