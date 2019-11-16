@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.belfazt.dao.UserRepository;
 import com.belfazt.services.CustomUserDetailService;
 
 @Component
@@ -25,9 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
-	
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Autowired
 	private CustomUserDetailService customUserDetailService;

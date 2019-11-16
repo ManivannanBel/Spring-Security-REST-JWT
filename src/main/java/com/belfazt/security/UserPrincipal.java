@@ -1,8 +1,11 @@
 package com.belfazt.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.belfazt.model.User;
@@ -30,7 +33,22 @@ public class UserPrincipal implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		
+		user.getPermissionsList().forEach(p -> {
+			//System.err.println(p);
+			GrantedAuthority authority = new SimpleGrantedAuthority(p);
+			authorities.add(authority);
+		});
+		
+		user.getRolesList().forEach(r -> {
+			//System.err.println(r);
+			GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_"+r);
+			authorities.add(authority);
+		});
+		
+		//System.err.println(authorities.toString());
+		return authorities;
 	}
 
 	@Override
