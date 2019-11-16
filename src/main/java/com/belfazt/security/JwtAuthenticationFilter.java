@@ -1,7 +1,6 @@
 package com.belfazt.security;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -39,9 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 				String username = jwtTokenProvider.getUsernameFromToken(jwt);
 				UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
 				
-				
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-						userDetails, null, Collections.emptyList()		
+						userDetails, null, userDetails.getAuthorities()		
 				);
 				
 				authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

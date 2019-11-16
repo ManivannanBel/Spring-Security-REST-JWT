@@ -29,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	CustomUserDetailService customUserDetailService;
 	
+	@Autowired
+	JwtAuthenticationEntryPoint unauthorizedHandler;
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailService).passwordEncoder(bCryptPasswordEncoder());
@@ -56,15 +59,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.cors()
 			.and()
 			.csrf().disable()
+			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+			.and()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.headers().frameOptions().sameOrigin()
-			.and()
 			.authorizeRequests()
 			.antMatchers("/login").permitAll()
-			.antMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-			.antMatchers("/api/manager/**").hasAnyAuthority("ROLE_MANAGER", "ROLE_ADMIN")
+			.antMatchers("/api/admin/**").hasRole("ADMIN")
+			.antMatchers("/api/manager/**").hasAnyRole("MANAGER", "ADMIN")
 			.anyRequest().authenticated();
 		
 		//http.addFilter();
